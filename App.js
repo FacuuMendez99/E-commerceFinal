@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import CategoriesScreen from './src/screens/CategoriesScreen';
+import { useFonts} from "expo-font"
+import { ActivityIndicator } from 'react-native';
+import ProductsByCategory from './src/screens/ProductsByCategory';
+import CategoryItem from './src/components/CategoryItem';
+import { useState } from 'react';
 
 export default function App() {
+  const[categorySelected,setCategorySelected] = useState("")
+  
+  const [fontLoaded] = useFonts({
+    "Poppins-Light": require("./assets/fonts/Poppins-Light.ttf"),
+    "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf")
+  })
+  
+  if (!fontLoaded) return <ActivityIndicator/>
+
+  const onSelectCategory = (category) => {
+    setCategorySelected(category)
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <>{
+      categorySelected
+      ?
+      <ProductsByCategory category={categorySelected}/>
+      :
+      <CategoriesScreen onSelectCategoryEvent={onSelectCategory} />    
+    }
+    </>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
