@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useState } from 'react'
 import { EvilIcons, Entypo } from '@expo/vector-icons';
+import { colors } from '../global/colors';
 
 const Search = ({ onSearchHandlerEvent }) => {
 
@@ -33,10 +34,10 @@ const Search = ({ onSearchHandlerEvent }) => {
                 value={searchInput}
             />
             <TouchableOpacity onPress={()=>{onSearchHandler(searchInput)}}>
-                <EvilIcons name="search" size={24} color="black" />
+                <EvilIcons name="search" size={24} color={colors.secondary} />
             </TouchableOpacity>
             <TouchableOpacity onPress={onResetSearchHandler}>
-                <Entypo name="cross" size={24} color="black" />
+                <Entypo name="cross" size={24} color={colors.secondary} />
             </TouchableOpacity>
         </View>
         {
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 10,
         borderBottomWidth:1,
+        borderBlockColor:colors.primary,
         borderTopWidth:1
     },
     textInput: {

@@ -1,13 +1,9 @@
-import CategoriesScreen from './src/screens/CategoriesScreen';
-import { useFonts} from "expo-font"
 import { ActivityIndicator } from 'react-native';
-import ProductsByCategory from './src/screens/ProductsByCategory';
-import CategoryItem from './src/components/CategoryItem';
-import { useState } from 'react';
+import { useFonts } from 'expo-font'
+import TabNavigator from './src/navigation/TabNavigator';
 
 export default function App() {
-  const[categorySelected,setCategorySelected] = useState("")
-  
+
   const [fontLoaded] = useFonts({
     "Poppins-Light": require("./assets/fonts/Poppins-Light.ttf"),
     "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
@@ -16,19 +12,8 @@ export default function App() {
   
   if (!fontLoaded) return <ActivityIndicator/>
 
-  const onSelectCategory = (category) => {
-    setCategorySelected(category)
-  }
-
   return (
-    <>{
-      categorySelected
-      ?
-      <ProductsByCategory category={categorySelected}/>
-      :
-      <CategoriesScreen onSelectCategoryEvent={onSelectCategory} />    
-    }
-    </>
+    <TabNavigator/>
   )
 }
 
