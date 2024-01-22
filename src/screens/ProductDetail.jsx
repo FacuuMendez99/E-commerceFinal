@@ -2,6 +2,8 @@ import {View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, useW
 import products_data from '../data/products_data.json'
 import { useEffect, useState } from 'react'
 import { colors } from '../global/colors'
+import { addItem } from '../features/cartSlice'
+import { useDispatch } from 'react-redux'
 
 const ProductDetailScreen = ({route}) => {
     const [productSelected, setProductSelected] = useState({})
@@ -24,6 +26,12 @@ const ProductDetailScreen = ({route}) => {
     }
     ,[productId])
 
+    const dispatch = useDispatch()
+
+    const onAddToCart = () =>{
+      dispatch(addItem({...productSelected, quantity: 1}))
+    }
+
     return(
         <>
         {
@@ -42,7 +50,7 @@ const ProductDetailScreen = ({route}) => {
                 <Text style={styles.title}>{productSelected.title}</Text>
                 <Text style={styles.description}>{productSelected.description}</Text>
                 <Text style={styles.price}>$ {productSelected.price}</Text>
-                <TouchableOpacity style={isPortrait ? styles.buyButton : styles.buyAlt} onPress={() => null}>
+                <TouchableOpacity style={isPortrait ? styles.buyButton : styles.buyAlt} onPress={onAddToCart}>
                   <Text style={styles.buyText}>Comprar</Text>
                 </TouchableOpacity>
               </View>
@@ -88,7 +96,7 @@ const styles = StyleSheet.create({
       width: 200,
       padding: 10,
       alignItems: 'center',
-      backgroundColor: 'green',
+      backgroundColor: colors.success,
       borderRadius: 10,
     },
     buyText: {

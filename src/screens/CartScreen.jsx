@@ -1,19 +1,21 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import cart_data from "../data/cart_data.json"
 import CartItem from '../components/CartItem'
 import { colors } from '../global/colors'
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { usePostOrderMutation } from '../services/shopService';
+
 
 const CartScreen = () => {
 
-    const [total, setTotal] = useState()
+    const cartItems = useSelector(state=>state.cartReducer.items)
+    const total = useSelector(state=>state.cartReducer.total)
+    const [triggerPost, result] =  usePostOrderMutation()
 
-    useEffect(()=>{
-        const totalCart = cart_data.reduce((accumulator, currentItem)=>(
-            accumulator+=currentItem.price*currentItem.quantity
-        ),0)
-        setTotal(totalCart)
-    },[])
+    const confirmCart = ()=>{
+      triggerPost({total,cartItems,user:"LoggedUser" })
+    }
+
 
     const renderCartItem = ({item}) => (
         <CartItem item={item} />
@@ -22,13 +24,13 @@ const CartScreen = () => {
     return (
         <View style={styles.cartContainer}>
             <FlatList
-                data={cart_data}
+                data={cartItems}
                 renderItem={renderCartItem}
                 keyExtractor={item => item.id}
             />
             <View style={styles.cartConfirm}>
                 <Text style={styles.totalPrice}>Total: USD {total}</Text>
-                <TouchableOpacity style={styles.confirmButton} onPress={null}>
+                <TouchableOpacity style={styles.confirmButton} onPress={confirmCart}>
                     <Text style={styles.textConfirm}>Confirmar</Text>
                 </TouchableOpacity>
             </View>
@@ -54,13 +56,13 @@ const styles = StyleSheet.create({
       fontFamily: 'Poppins-Bold'
     },
     confirmButton:{
-      backgroundColor: colors.secondary,
+      backgroundColor: colors.primaryBack,
       padding:10,
       borderRadius:10,
     },
     textConfirm:{
       fontFamily:'Poppins-Bold',
       fontSize:16,
-      color: '#fff'
+      color: colors.primary
     }  
   })

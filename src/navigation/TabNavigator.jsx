@@ -1,9 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import ShopNavigator from "./ShopNavigator";
 import CartNavigator from "./CartNavigator";
 import OrdersNavigator from "./OrdersNavigator";
+import ProfileNavigator from "./ProfileNavigator";
 import { colors } from "../global/colors";
 import { Entypo, AntDesign, FontAwesome } from '@expo/vector-icons'; 
 
@@ -14,7 +14,6 @@ const Tab = createBottomTabNavigator()
 const TabNavigator = ()=>{
 
     return(
-        <NavigationContainer>
             <Tab.Navigator
                 screenOptions={{
                     headerShown: false,
@@ -27,7 +26,10 @@ const TabNavigator = ()=>{
                     component={ShopNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <Entypo name="shop" size={24} color={focused?"#fff":"#ccc"} />
+                            <View style={styles.tabButton}>
+                                <Entypo name="shop" size={24} color={focused?"#fff":"#ccc"} />
+                                <Text style={styles.tabText}>Tienda</Text>
+                            </View>
                         )
                     }}
                 />
@@ -36,7 +38,10 @@ const TabNavigator = ()=>{
                     component={CartNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <AntDesign name="shoppingcart" size={24} color={focused?"#fff":"#ccc"} />
+                            <View style={styles.tabButton}>
+                                <AntDesign name="shoppingcart" size={24} color={focused?"#fff":"#ccc"} />
+                                <Text style={styles.tabText}>Carrito</Text>
+                            </View>
                         )
                     }}
                 />
@@ -45,12 +50,26 @@ const TabNavigator = ()=>{
                     component={OrdersNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <FontAwesome name="reorder" size={24} color={focused?"#fff":"#ccc"} />
+                            <View style={styles.tabButton}>
+                                <FontAwesome name="reorder" size={24} color={focused?"#fff":"#ccc"} />
+                                <Text style={styles.tabText}>Ordenes</Text>
+                            </View>
+                        )
+                    }}
+                />
+                <Tab.Screen     
+                    name="ProfileStack" 
+                    component={ProfileNavigator} 
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            <View style={styles.tabButton}>
+                                <FontAwesome name="user-o" size={24} color={focused?"#fff":"#ccc"} />
+                                <Text style={styles.tabText}>Perfil</Text>
+                            </View>
                         )
                     }}
                 />
             </Tab.Navigator>
-        </NavigationContainer>
     )
 }
 
@@ -61,11 +80,16 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary,
         shadowColor: "#ccc",
         elevation: 1,
-        position: "absolute",
-        left: 25,
-        right: 25,
-        bottom: 25,    
-        height: 60,
-        borderRadius:20,
+        height: 70,
+    },
+    tabButton:{
+        alignItems:"center",
+        justifyContent:"center",
+        top:5,
+
+    },
+    tabText:{
+        color:"#ebd2ff",
+        fontFamily:"Poppins-Light"
     }
 })
