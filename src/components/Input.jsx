@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 import { colors } from '../global/colors'
 
-const Input = ({ label, isSecureEntry = false, error = "", onChange }) => {
+const Input = ({ placeholder, isSecureEntry = false, error = "", onChange }) => {
     const [input, setInput] = useState()
 
     const onHandleChangeText = (text) => {
@@ -12,12 +12,13 @@ const Input = ({ label, isSecureEntry = false, error = "", onChange }) => {
 
     return (
         <View style={styles.inputContainer}>
-            <Text style={styles.label}>{label}</Text>
             <TextInput
                 style={styles.input}
                 onChangeText={onHandleChangeText}
                 secureTextEntry={isSecureEntry}
                 value={input}
+                placeholder={placeholder}
+                placeholderTextColor={'#c67bff'}
             />
             {error && <Text style={styles.error}>{error}</Text>}
         </View>

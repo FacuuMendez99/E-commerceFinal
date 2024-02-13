@@ -58,18 +58,18 @@ const SignupScreen = ({navigation}) => {
     return (
         <KeyboardAvoidingView style={styles.container} behavior='height'>
             <Input
-                label="Email:"
+                placeholder={"Email"}
                 onChange={setEmail}
                 error={emailError}
             />
             <Input
-                label="Contraseña:"
+                placeholder={"Contraseña"}
                 onChange={setPassword}
                 isSecureEntry={true}
                 error={passwordError}
             />
             <Input
-                label="Repetir contraseña:"
+                placeholder={"Repetir contraseña"}
                 onChange={setConfirmPassword}
                 isSecureEntry={true}
                 error={confirmPasswordError}
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        gap: 10,
+        gap: 25,
     },
     btn: {
         padding: 10,

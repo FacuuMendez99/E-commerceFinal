@@ -21,7 +21,7 @@ const Search = ({ onSearchHandlerEvent }) => {
 
     const onResetSearchHandler = () => {
         setSearchInput("")
-        onSearchHandlerEvent(searchInput)
+        onSearchHandlerEvent("")
     }
 
     return (
@@ -32,18 +32,18 @@ const Search = ({ onSearchHandlerEvent }) => {
                 onChangeText={setSearchInput}
                 placeholder='Buscar...'
                 value={searchInput}
+                onChange={(e) => {
+                    onSearchHandlerEvent(e.nativeEvent.text)}}
+                placeholderTextColor={'#c67bff'}
             />
-            <TouchableOpacity onPress={()=>{onSearchHandler(searchInput)}}>
-                <EvilIcons name="search" size={24} color={colors.secondary} />
-            </TouchableOpacity>
             <TouchableOpacity onPress={onResetSearchHandler}>
-                <Entypo name="cross" size={24} color={colors.secondary} />
+                <Entypo name="cross" size={24} color={colors.primaryBack}/>
             </TouchableOpacity>
         </View>
         {
             error
             ?
-            <View><Text>{error}</Text></View>
+            <View><Text style={{textAlign:"center",fontFamily:"Poppins-Light",color: colors.error}}>{error}</Text></View>
             :
             null
         }
@@ -57,13 +57,18 @@ const styles = StyleSheet.create({
     searchContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems:'center',
         padding: 10,
-        borderBottomWidth:1,
-        borderBlockColor:colors.primary,
-        borderTopWidth:1
+        backgroundColor:colors.primary
     },
     textInput: {
-        width: '80%'
+        width: '90%',
+        backgroundColor:"white",
+        padding:5,
+        paddingLeft:15,
+        borderRadius:15,
+        color:colors.primary,
+        backgroundColor:colors.primaryBack
     },
 
 })

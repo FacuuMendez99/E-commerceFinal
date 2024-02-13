@@ -5,6 +5,7 @@ import { useLogInMutation } from '../services/authService'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../features/authSlice'
+import { insertSession } from '../db'
 
 const LoginScreen = ({navigation}) => {
 
@@ -21,17 +22,25 @@ const LoginScreen = ({navigation}) => {
     useEffect(()=>{
         if(result.data){
             dispatch(setUser(result.data))
+            insertSession({
+              localId: result.data.localId,
+              email: result.data.email,
+              token: result.data.idToken
+          })
+          .then(result=>console.log("Éxito al guardar sesión: ", result))
+          .catch(error=>console.log("Error al guardar sesión: ", error.message))
         }
     }, [result])
 
     return (
         <View style={styles.container}>
             <Input
-                label="Email:"
+                placeholder={"Email"}
                 onChange={setEmail}
+              
             />
             <Input
-                label="Contraseña:"
+                placeholder={"Contraseña"}
                 onChange={setPassword}
                 isSecureEntry={true}
             />
@@ -56,7 +65,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       flex: 1,
-      gap: 10,
+      gap: 25,
     },
     btn: {
       padding: 10,

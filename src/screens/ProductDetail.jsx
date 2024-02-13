@@ -1,18 +1,21 @@
-import {View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, useWindowDimensions, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, useWindowDimensions} from 'react-native'
 import products_data from '../data/products_data.json'
 import { useEffect, useState } from 'react'
 import { colors } from '../global/colors'
+import { useSelector, useDispatch } from 'react-redux'
+import { setProductSelected } from '../features/shopSlice'
+import Carousel from '../components/Carrousel'
 import { addItem } from '../features/cartSlice'
-import { useDispatch } from 'react-redux'
 
 const ProductDetailScreen = ({route}) => {
-    const [productSelected, setProductSelected] = useState({})
     const [isLoading, setIsLoading] = useState(true)
     const [isPortrait, setIsPortrait] = useState(true)
 
     const { height, width } = useWindowDimensions()
 
     const productId = route.params
+
+    const productSelected = useSelector(state=>state.shopReducer.productSelected)
 
     useEffect(() => {
         height < width ? setIsPortrait(false) : setIsPortrait(true)
@@ -21,7 +24,7 @@ const ProductDetailScreen = ({route}) => {
 
     useEffect(()=>{
         const productFound = products_data.find(product=>product.id===productId)
-        setProductSelected(productFound)
+        setProductSelected(productFound) 
         setIsLoading(false)
     }
     ,[productId])
@@ -33,81 +36,70 @@ const ProductDetailScreen = ({route}) => {
     }
 
     return(
-        <>
-        {
-        isLoading
-        ?
-        <ActivityIndicator />
-        :
-        <>
-            <ScrollView >
-              <Image
-                source={{ uri: productSelected.images[0] }}
-                resizeMode='cover'
-                style={isPortrait ? styles.imageProduct : styles.imageProductLandscape}
-              />
-              <View style={styles.detailContainer}>
-                <Text style={styles.title}>{productSelected.title}</Text>
-                <Text style={styles.description}>{productSelected.description}</Text>
-                <Text style={styles.price}>$ {productSelected.price}</Text>
-                <TouchableOpacity style={isPortrait ? styles.buyButton : styles.buyAlt} onPress={onAddToCart}>
-                  <Text style={styles.buyText}>Comprar</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-            </>
-        }
-        
-        </>
-    )
+      <View style={styles.container}>
+      {
+      isLoading
+      ?
+      <ActivityIndicator size="large" color="#000" />
+      :
+      <>
+          <Carousel /> 
+          <View style={styles.detailContainer}>
+              <Text style={styles.title}>{productSelected.title}</Text>
+              <Text style={styles.description}>{productSelected.description}</Text>
+              <Text style={styles.price}>$ {productSelected.price}</Text>
+              <TouchableOpacity style={styles.buyButton} onPress={onAddToCart}>
+                <Text style={styles.buyText}>Agregar al carrito</Text>
+              </TouchableOpacity>
+          </View>
+          </>
+      }
+      </View>
+  )
 }
 
 export default ProductDetailScreen 
 
 const styles = StyleSheet.create({
-    imageProduct: {
-      minWidth: 300,
-      width: '100%',
-      height: 400,
-  
-    },
-    imageProductLandscape: {
-      width: 200,
-      height: 200,
-    },
-    detailContainer: {
-      alignItems: 'center',
-    },
-    title: {
-      fontFamily: 'Poppins-Bold',
-      fontSize: 32,
-    },
-    description: {
-      fontFamily: 'Poppins-Regular',
-      fontSize: 20,
-    },
-    price: {
-      fontFamily: 'Poppins-Bold',
-      fontSize: 32,
-      color: colors.secondary
-    },
-    buyButton: {
-      marginTop: 10,
-      width: 200,
-      padding: 10,
-      alignItems: 'center',
-      backgroundColor: colors.success,
-      borderRadius: 10,
-    },
-    buyText: {
-      color: '#fff'
-    },
-    buyAlt: {
-      marginTop: 10,
-      width: 200,
-      padding: 10,
-      alignItems: 'center',
-      backgroundColor: colors.primary,
-      borderRadius: 10,
-    }
-    })
+  container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      padding: 20,
+  },
+  detailContainer: {
+    alignItems: 'center',
+  },
+  title: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 24,
+    color: "#000",
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  description: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 16,
+    color: "#000",
+    textAlign: 'justify',
+    marginBottom: 10,
+  },
+  price: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 24,
+    color: "#000",
+    marginBottom: 10,
+  },
+  buyButton: {
+    marginTop: 10,
+    width: '100%',
+    padding: 10,
+    alignItems: 'center',
+    backgroundColor: colors.success,
+    borderRadius: 10,
+  },
+  buyText: {
+    color: '#fff',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 18,
+  }
+})  

@@ -7,13 +7,14 @@ import { usePostOrderMutation } from '../services/shopService';
 
 
 const CartScreen = () => {
+    const user = useSelector(state=>state.authReducer.user)
 
     const cartItems = useSelector(state=>state.cartReducer.items)
     const total = useSelector(state=>state.cartReducer.total)
     const [triggerPost, result] =  usePostOrderMutation()
 
     const confirmCart = ()=>{
-      triggerPost({total,cartItems,user:"LoggedUser" })
+      triggerPost({total,cartItems,user:user })
     }
 
 
@@ -43,9 +44,10 @@ export default CartScreen
 const styles = StyleSheet.create({
     cartContainer: {
       flex: 1,
+
     },
     cartConfirm: {
-      marginBottom: 130,
+      marginVertical: 20,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -59,6 +61,8 @@ const styles = StyleSheet.create({
       backgroundColor: colors.primaryBack,
       padding:10,
       borderRadius:10,
+      borderWidth:2,
+      borderColor:colors.primary
     },
     textConfirm:{
       fontFamily:'Poppins-Bold',

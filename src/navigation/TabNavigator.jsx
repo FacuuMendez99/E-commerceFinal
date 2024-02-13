@@ -27,7 +27,7 @@ const TabNavigator = ()=>{
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={styles.tabButton}>
-                                <Entypo name="shop" size={24} color={focused?"#fff":"#ccc"} />
+                                <Entypo name="shop" size={focused?30:24} color={focused?colors.primary:colors.gray} />
                                 <Text style={styles.tabText}>Tienda</Text>
                             </View>
                         )
@@ -39,7 +39,7 @@ const TabNavigator = ()=>{
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={styles.tabButton}>
-                                <AntDesign name="shoppingcart" size={24} color={focused?"#fff":"#ccc"} />
+                                <AntDesign name="shoppingcart" size={focused?30:24} color={focused?colors.primary:colors.gray}/>
                                 <Text style={styles.tabText}>Carrito</Text>
                             </View>
                         )
@@ -51,7 +51,7 @@ const TabNavigator = ()=>{
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={styles.tabButton}>
-                                <FontAwesome name="reorder" size={24} color={focused?"#fff":"#ccc"} />
+                                <FontAwesome name="reorder" size={focused?30:24} color={focused?colors.primary:colors.gray} />
                                 <Text style={styles.tabText}>Ordenes</Text>
                             </View>
                         )
@@ -63,7 +63,7 @@ const TabNavigator = ()=>{
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={styles.tabButton}>
-                                <FontAwesome name="user-o" size={24} color={focused?"#fff":"#ccc"} />
+                                <FontAwesome name="user-o" size={focused?30:24} color={focused?colors.primary:colors.gray} />
                                 <Text style={styles.tabText}>Perfil</Text>
                             </View>
                         )
@@ -77,7 +77,9 @@ export default TabNavigator
 
 const styles = StyleSheet.create({
     tabBar:{
-        backgroundColor: colors.primary,
+        borderTopWidth:2,
+        borderColor:colors.primary,
+        backgroundColor: "white",
         shadowColor: "#ccc",
         elevation: 1,
         height: 70,
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
 
     },
     tabText:{
-        color:"#ebd2ff",
+        color:colors.primary,
         fontFamily:"Poppins-Light"
     }
 })

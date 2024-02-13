@@ -1,21 +1,33 @@
-import {View, Text, StyleSheet, FlatList} from 'react-native'
+import {StyleSheet, FlatList, Text, ActivityIndicator} from 'react-native'
 import CategoryItem from '../components/CategoryItem'
-import { useSelector } from 'react-redux'
 import {useGetCategoriesQuery} from "../services/shopService"
+import {useGetProductsQuery} from "../services/shopService"
+
 
 const CategoriesScreen = ({navigation}) => {
 
-    // const categories = useSelector(state=>state.shopReducer.categories)
-    const {data, isLoading, error} = useGetCategoriesQuery()
+    const {data: categories, isLoading: isLoadingCategories, error: categoriesError} = useGetCategoriesQuery()
+    const {data: products, isLoading: isLoadingProducts, error: productsError} = useGetProductsQuery()
 
-    const renderCategoryItem = ({item}) => (
-        <CategoryItem category={item} navigation={navigation} />
-    )
+    const renderCategoryItem = ({item: category}) => {
+        const firstProduct = products.find(product => product.category === category);
+        return <CategoryItem category={category} product={firstProduct} navigation={navigation} />
+    }
 
+    if (isLoadingCategories || isLoadingProducts) {
+        return <ActivityIndicator/>;
+    }
+
+    if (categoriesError || productsError) {
+        return <Text>Error!</Text>;
+    }
+
+    
     return(
         <>
         <FlatList style={styles.categories}
-            data={data}
+            data={categories}
+            numColumns={2}
             renderItem={renderCategoryItem}
             keyExtractor={item=>item}
         />
@@ -26,5 +38,4 @@ const CategoriesScreen = ({navigation}) => {
 export default CategoriesScreen
 
 const styles = StyleSheet.create({
-
 })
